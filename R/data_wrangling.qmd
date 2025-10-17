@@ -1,0 +1,43 @@
+---
+title: "Data Cleaning"
+format: html
+editor: visual
+---
+
+## Data Wrangling
+
+Remove observations with missing values and select only variables that will be used:
+
+```{r}
+library(tidyverse)
+library(readr)
+
+#Read original CSV file
+Microloans <- read_csv("data/Microloans.csv") |>
+  #Drop rows with missing values
+  drop_na() |>
+  #Rename variable names to be more concise
+  rename(Date = "Loan Date", Street = "Street Name") |>
+  #Select only the variables to be analyzed
+  select(Date, Lender, Industry, Street, Zip) |>
+  #Reformat the date
+  mutate(Date = as.Date(Date, format = "%m/%d/%Y")) |>
+  #Sort them by date (ascending)
+  arrange(Date)
+
+#Write new CSV File with the cleaned data
+write.csv(Microloans, "data/CleanedMicroloans.csv", row.names = FALSE)
+```
+
+```{r}
+# Use lubridate library
+#library(lubridate)
+
+# Converts date into Date type
+#data <- data |> mutate(Date = as.Date(Date, format = "%m/%d/%Y"))
+
+# Creates year, month, and day columns based on revised Date column
+#data |> mutate(year = year(Date), 
+               #month = month(Date), 
+               #day = day(Date))
+```
